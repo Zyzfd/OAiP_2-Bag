@@ -377,11 +377,7 @@ public class Main extends JFrame {
             while (true) {
                 if (step == l) {
                     if (tec_kol_pred > k) {
-<<<<<<< HEAD
-                        if (new_mass[0][i] + sumWeight < M) {
-=======
                         if (new_mass[0][i] + sumWeight < (float)M) {
->>>>>>> 9ade933 (added multicolor bag and changed to float values)
                             sumWeight += new_mass[0][i];
                             sumCost += new_mass[1][i];
                             frame.repaint();
