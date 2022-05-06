@@ -22,6 +22,7 @@ public class Main extends JFrame {
     static JLabel itemProgress[] = new JLabel[m];
     static JFrame frame = new JFrame("Задача о рюкзаке");
     static Canvas canv;
+    AboutDialog dialog;
     static int y1;
     static int y2;
     static int prev_y1 = 400;
@@ -405,6 +406,9 @@ public class Main extends JFrame {
             bubble();
     
             System.out.printf("\nОтвет: %5f\n", put_in_bag());
+            
+            dialog = new AboutDialog(sumCost);
+            dialog.setVisible(true);
         }
     }
 
@@ -446,12 +450,31 @@ public class Main extends JFrame {
                 }
             }
             
-            
-
             g2d.setColor(Color.BLACK);
             int[] xPoints = {330, 330, 0, 0, 330, 170, 0, 70, 400, 400, 330, 330, 400};
             int[] yPoints = {70, 400, 400, 70, 70, 150, 70, 0, 0, 330, 400, 70, 0};
             g2d.drawPolygon(xPoints, yPoints, 13);
+        }
+    }
+
+    class AboutDialog extends JDialog {
+        public AboutDialog (float sumCost) {
+
+            JLabel finalText = new JLabel("Итоговая стоимость вещей в рюкзаке: " + String.valueOf(sumCost));
+            finalText.setVerticalAlignment(JLabel.CENTER);
+            finalText.setHorizontalAlignment(JLabel.CENTER);
+
+            add(finalText);
+    
+            JButton okButton = new JButton("ok");
+            okButton.addActionListener(e -> {
+                setVisible(false);
+            });
+        
+            JPanel panel = new JPanel();
+            panel.add(okButton);
+            add(panel, BorderLayout.SOUTH);
+            setSize(350, 160);
         }
     }
 }
