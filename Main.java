@@ -511,7 +511,8 @@ public class Main extends JFrame {
 
             ruc1.setText(String.valueOf(sumWeight));
             if (M != 0) {
-                String result = String.format("%.3f",sumWeight/M);
+                float res = sumWeight/M*100;
+                String result = String.format("%.2f", res);
                 ruc2.setText(result + "%");
             } else {
                 ruc2.setText("0%");
@@ -532,6 +533,7 @@ public class Main extends JFrame {
             JButton okButton = new JButton("ok");
             okButton.addActionListener(e -> {
                 setVisible(false);
+                System.exit(0);
             });
         
             JPanel panel = new JPanel();
