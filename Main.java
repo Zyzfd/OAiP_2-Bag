@@ -20,6 +20,7 @@ public class Main extends JFrame {
     static JLabel itemCost_Ud[] = new JLabel[m];
     static JLabel itemUdCost_Ud[] = new JLabel[m];
     static JLabel itemProgress[] = new JLabel[m];
+    static JLabel itemProgress_Ud[] = new JLabel[m];
     static JFrame frame = new JFrame("Задача о рюкзаке");
     static Canvas canv;
     AboutDialog dialog;
@@ -157,7 +158,7 @@ public class Main extends JFrame {
                 itemUdCost_Ud[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
-            JLabel itemProgress_Ud[] = new JLabel[m];
+            
             itemProgress_Ud[0] = new JLabel("Прогресс");
             itemProgress_Ud[0].setPreferredSize(new Dimension(150, 20));
             // itemProgress_Ud[0].setBorder(solidBorder);
@@ -316,8 +317,11 @@ public class Main extends JFrame {
     
         }
         
-        static void bubble()
-        {
+        static void bubble() {
+            for (int i = 1; i < m; i++) {
+                itemProgress[i].setText("");
+            }
+
             for (int i = 0; i < mass.length; i++) {
                 for (int j = 0; j < mass[0].length; j++) {
                     new_mass[i][j] = mass[i][j];
@@ -357,6 +361,10 @@ public class Main extends JFrame {
                             itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
                             itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
                             itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));
+                            itemProgress[i+1].setText("*");
+                            if (i > 0) {
+                                itemProgress[i].setText("");
+                            }
                         } else {
                             udel[i] = 0;
                         }
@@ -381,6 +389,10 @@ public class Main extends JFrame {
                         if (new_mass[0][i] + sumWeight < (float)M) {
                             sumWeight += new_mass[0][i];
                             sumCost += new_mass[1][i];
+                            itemProgress_Ud[i+1].setText("*");
+                            if (i > 0) {
+                                itemProgress_Ud[i].setText("");
+                            }
                             frame.repaint();
                             state_bag++;
                             k++;
