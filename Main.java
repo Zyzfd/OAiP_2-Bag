@@ -6,11 +6,11 @@ import javax.swing.border.*;
 
 
 public class Main extends JFrame {
-    static final int m = 10;
+    static final int m = 12;
     Thread thread;
     static float[][] mass = new float[2][m-1];
     static float[][] new_mass = new float[2][m-1];
-    static int M;
+    static float M;
     static float[] udel;
     static float sumCost = 0;
     static float sumWeight = 0;
@@ -22,6 +22,8 @@ public class Main extends JFrame {
     static JLabel itemProgress[] = new JLabel[m];
     static JLabel itemProgress_Ud[] = new JLabel[m];
     static JFrame frame = new JFrame("Задача о рюкзаке");
+    static JLabel ruc1;
+    static JLabel ruc2;
     static Canvas canv;
     AboutDialog dialog;
     static int y1;
@@ -29,9 +31,9 @@ public class Main extends JFrame {
     static int prev_y1 = 400;
     static int prev_y2 = 330;
     static int state_bag = 0;
-    static Color[] color_bag = new Color[m-1];
-    static int[][] state_bag_mass = new int[m-1][5];
-    static int[][] state_bag_mass_1 = new int[m-1][2];
+    static Color[] color_bag = new Color[m];
+    static int[][] state_bag_mass = new int[m][5];
+    static int[][] state_bag_mass_1 = new int[m][2];
     
 
     public static void main(String[] args) {
@@ -40,7 +42,9 @@ public class Main extends JFrame {
 
     public Main() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1350, 1000));
+        frame.setPreferredSize(new Dimension(1500, 1000));
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setState(JFrame.NORMAL);
         Dimension labelSize = new Dimension(50, 20);
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
@@ -204,15 +208,39 @@ public class Main extends JFrame {
 
         JPanel bagPanel = new JPanel();
         bagPanel.setBorder(BorderFactory.createTitledBorder("Рюкзак"));
-        bagPanel.setLayout(new FlowLayout());
-        bagPanel.setPreferredSize(new Dimension(410, 460));
+        bagPanel.setLayout(new GridLayout(0, 2));
+        bagPanel.setPreferredSize(new Dimension(850, 460));
             canv = new Canvas();
             //canv.setBackground(Color.WHITE);
             canv.setPreferredSize(new Dimension(410, 410));
-            JLabel bagLabel = new JLabel("Грузоподъемность рюкзака:");
-            JLabel ruc = new JLabel();
-        bagPanel.add(bagLabel);
-        bagPanel.add(ruc);
+            JPanel bagPanel_1 = new JPanel();
+            bagPanel_1.setLayout(new FlowLayout());
+                Dimension labelSize_bag = new Dimension(260, 20);
+                JLabel bagLabel = new JLabel("Грузоподъемность рюкзака:");
+                bagLabel.setPreferredSize(labelSize_bag);
+
+                JLabel ruc = new JLabel();
+                ruc.setPreferredSize(labelSize);
+
+                JLabel tec_weight_bag = new JLabel("Текущая заполненность рюкзака: ");
+                tec_weight_bag.setPreferredSize(labelSize_bag);
+
+                ruc1 = new JLabel("0");
+                ruc1.setPreferredSize(labelSize);
+
+                JLabel tec_weight_bag_perc = new JLabel("Текущая заполненность рюкзака (в %): ");
+                tec_weight_bag_perc.setPreferredSize(labelSize_bag);
+
+                ruc2 = new JLabel("0%");
+                ruc2.setPreferredSize(labelSize);
+
+            bagPanel_1.add(bagLabel);
+            bagPanel_1.add(ruc);
+            bagPanel_1.add(tec_weight_bag);
+            bagPanel_1.add(ruc1);
+            bagPanel_1.add(tec_weight_bag_perc);
+            bagPanel_1.add(ruc2);
+        bagPanel.add(bagPanel_1);
         bagPanel.add(canv);
         
         mainContainer.add(bagPanel);
@@ -276,7 +304,7 @@ public class Main extends JFrame {
         allContainer.add(next_stepButton, c);
 
         ok.addActionListener(e -> {
-            M = Integer.parseInt(grus.getText());
+            M = Float.parseFloat(grus.getText());
             ruc.setText(String.valueOf(M));
         });
 
@@ -285,6 +313,8 @@ public class Main extends JFrame {
             mass[1][tec_kol_pred] = Float.parseFloat(cost.getText());
             itemWeight[tec_kol_pred+1].setText(String.valueOf(mass[0][tec_kol_pred]));
             itemCost[tec_kol_pred+1].setText(String.valueOf(mass[1][tec_kol_pred]));
+            weight.setText("");
+            cost.setText("");
             tec_kol_pred++;
         });
 
@@ -367,6 +397,13 @@ public class Main extends JFrame {
                             }
                         } else {
                             udel[i] = 0;
+                            itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
+                            itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
+                            itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));
+                            itemProgress[i+1].setText("*");
+                            if (i > 0) {
+                                itemProgress[i].setText("");
+                            }
                         }
                     } else {
                         break;
@@ -386,7 +423,7 @@ public class Main extends JFrame {
             while (true) {
                 if (step == l) {
                     if (tec_kol_pred > k) {
-                        if (new_mass[0][i] + sumWeight < (float)M) {
+                        if (new_mass[0][i] + sumWeight < M) {
                             sumWeight += new_mass[0][i];
                             sumCost += new_mass[1][i];
                             itemProgress_Ud[i+1].setText("*");
@@ -394,9 +431,16 @@ public class Main extends JFrame {
                                 itemProgress_Ud[i].setText("");
                             }
                             frame.repaint();
-                            state_bag++;
+                            
                             k++;
                             i++;
+                            try {
+                                sleep(100);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            state_bag++;
                         } else {
                             break;
                         }
@@ -432,9 +476,7 @@ public class Main extends JFrame {
             Graphics2D g2d = (Graphics2D)g;
             Random rand = new Random();
             
-            float MF = (float)M;
-            float sumWeightF = (float)sumWeight;
-            float perc = sumWeightF / MF;
+            float perc = sumWeight / M;
             if (state_bag != 0) {
                 prev_y1 = y1;
                 prev_y2 = y2;
@@ -466,6 +508,15 @@ public class Main extends JFrame {
             int[] xPoints = {330, 330, 0, 0, 330, 170, 0, 70, 400, 400, 330, 330, 400};
             int[] yPoints = {70, 400, 400, 70, 70, 150, 70, 0, 0, 330, 400, 70, 0};
             g2d.drawPolygon(xPoints, yPoints, 13);
+
+            ruc1.setText(String.valueOf(sumWeight));
+            if (M != 0) {
+                String result = String.format("%.3f",sumWeight/M);
+                ruc2.setText(result + "%");
+            } else {
+                ruc2.setText("0%");
+            }
+            
         }
     }
 
