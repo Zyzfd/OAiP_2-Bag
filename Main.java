@@ -23,7 +23,9 @@ public class Main extends JFrame {
     static JFrame frame = new JFrame("Задача о рюкзаке");
     static JLabel ruc1;
     static JLabel ruc2;
-    static Canvas canv;
+    static PrintBag printBag;
+    static ProgressCost progCost;
+    static ProgressItems progItems;
     AboutDialog dialog;
     static int y1;
     static int y2;
@@ -99,20 +101,9 @@ public class Main extends JFrame {
             itemProgress = new JLabel("Прогресс");
             itemProgress.setPreferredSize(new Dimension(150, 20));
             itemProgress.setBackground(Color.WHITE);
-            ProgressItems progItems = new ProgressItems();
+            progItems = new ProgressItems();
             progItems.setBackground(Color.WHITE);
             progItems.setPreferredSize(new Dimension(600, 40));
-            // itemProgress[1] = new JLabel();
-            // itemProgress[1].setPreferredSize(new Dimension(600, 40));
-            // itemProgress[1].setBorder(solidBorder);
-            // itemProgress[1].add(prog);
-            // for (int i = 1; i < m; i++) {
-            //     itemProgress[i] = new JLabel();
-            //     itemProgress[i].setPreferredSize(labelSize);
-            //     //itemProgress[i].setBorder(solidBorder);
-            //     itemProgress[i].setVerticalAlignment(JLabel.CENTER);
-            //     itemProgress[i].setHorizontalAlignment(JLabel.CENTER);
-            // }
 
             JPanel preItemsPanel_1 = new JPanel();
             preItemsPanel_1.setLayout(new FlowLayout());
@@ -192,7 +183,7 @@ public class Main extends JFrame {
             itemProgress_Ud = new JLabel("Прогресс");
             itemProgress_Ud.setPreferredSize(new Dimension(150, 20));
             itemProgress_Ud.setBackground(Color.WHITE);
-            ProgressCost progCost = new ProgressCost();
+            progCost = new ProgressCost();
             progCost.setBackground(Color.WHITE);
             progCost.setBorder(solidBorder);
             progCost.setPreferredSize(new Dimension(600, 40));
@@ -236,9 +227,9 @@ public class Main extends JFrame {
         bagPanel.setBackground(Color.WHITE);
         bagPanel.setLayout(new GridLayout(0, 2));
         bagPanel.setPreferredSize(new Dimension(850, 460));
-            canv = new Canvas();
-            canv.setBackground(Color.WHITE);
-            canv.setPreferredSize(new Dimension(410, 410));
+            printBag = new PrintBag();
+            printBag.setBackground(Color.WHITE);
+            printBag.setPreferredSize(new Dimension(410, 410));
             JPanel bagPanel_1 = new JPanel();
             bagPanel_1.setLayout(new FlowLayout());
             bagPanel_1.setBackground(Color.WHITE);
@@ -274,7 +265,7 @@ public class Main extends JFrame {
             bagPanel_1.add(tec_weight_bag_perc);
             bagPanel_1.add(ruc2);
         bagPanel.add(bagPanel_1);
-        bagPanel.add(canv);
+        bagPanel.add(printBag);
         
 
         JPanel addPanel = new JPanel();
@@ -432,41 +423,25 @@ public class Main extends JFrame {
             while (true) {
                 if (step == i) {
                     if (tec_kol_pred > i) {
-                        if (mass[0][i] != 0) {
-                            progressCountItems++;
+                        progressCountItems++;
                             if (progressCountItems != -1) {
                                 for (xProgressItems = 55 * (progressCountItems-1); xProgressItems < 55 * progressCountItems; xProgressItems++) {
-                                    frame.repaint();
+                                    progItems.repaint();
                                     try {
-                                        Thread.sleep(4);
+                                        Thread.sleep(5);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             }
-                            udel[i] = mass[1][i] / mass[0][i];
-                            itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
-                            itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
-                            itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));                           
+                        if (mass[0][i] != 0) {
+                            udel[i] = mass[1][i] / mass[0][i];         
                         } else {
                             udel[i] = 0;
-                            itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
-                            itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
-                            itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));
-                            
-                            if (progressCountItems != -1) {
-                                for (xProgressItems = 55 * (progressCountItems-1); xProgressItems < 55 * progressCountItems; xProgressItems++) {
-                                    frame.repaint();
-                                    try {
-                                        Thread.sleep(4);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-
-                            frame.repaint();
                         }
+                        itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
+                        itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
+                        itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));
                     } else {
                         break;
                     }
@@ -489,7 +464,7 @@ public class Main extends JFrame {
                             progressCountCost++;
                             if (progressCountCost != -1) {
                                 for (xProgressCost = 55 * (progressCountCost-1); xProgressCost < 55 * progressCountCost; xProgressCost++) {
-                                    frame.repaint();
+                                    progCost.repaint();
                                     try {
                                         Thread.sleep(4);
                                     } catch (InterruptedException e) {
@@ -500,7 +475,7 @@ public class Main extends JFrame {
 
                             sumWeight += new_mass[0][i];
                             sumCost += new_mass[1][i];
-                            frame.repaint();            
+                            printBag.repaint();            
                             k++;
                             i++;
                             try {
@@ -532,13 +507,13 @@ public class Main extends JFrame {
             System.out.printf("\nОтвет: %5f\n", put_in_bag());
 
             progressCountCost = -1;
-            frame.repaint();          
+            progCost.repaint();
             dialog = new AboutDialog(sumCost);
             dialog.setVisible(true);
         }
     }
 
-    class Canvas extends JPanel{
+    class PrintBag extends JPanel{
         @Override
         public void paint(Graphics g) {
             super.paint(g);
@@ -595,6 +570,7 @@ public class Main extends JFrame {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setColor(Color.WHITE);
             g2d.fillRect(0, 0, 600, 40);
@@ -602,6 +578,7 @@ public class Main extends JFrame {
                 g2d.setColor(Color.GREEN);
                 g2d.fillOval(15 + xProgressItems, 10, 20, 20);
             }
+            Toolkit.getDefaultToolkit().sync();
         }
     }
     
@@ -616,6 +593,7 @@ public class Main extends JFrame {
                 g2d.setColor(Color.GREEN);
                 g2d.fillOval(15 + xProgressCost, 10, 20, 20);
             }
+            Toolkit.getDefaultToolkit().sync();
         }
     }
 
