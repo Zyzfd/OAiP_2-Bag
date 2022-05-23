@@ -4,7 +4,6 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.*;
 
-
 public class Main extends JFrame {
     static final int m = 12;
     Thread thread;
@@ -119,7 +118,7 @@ public class Main extends JFrame {
             itemsPanel.add(preItemsPanel_2);
             itemsPanel.add(preItemsPanel_3);
 
-        mainContainer.add(itemsPanel);
+        
 
 
         JPanel costPanel = new JPanel();
@@ -203,7 +202,6 @@ public class Main extends JFrame {
             costPanel.add(preCostPanel_3);
             costPanel.add(preCostPanel_4);
 
-        mainContainer.add(costPanel);
 
 
         JPanel bagPanel = new JPanel();
@@ -243,8 +241,6 @@ public class Main extends JFrame {
         bagPanel.add(bagPanel_1);
         bagPanel.add(canv);
         
-        mainContainer.add(bagPanel);
-
 
         JPanel addPanel = new JPanel();
         addPanel.setBorder(BorderFactory.createTitledBorder("Добавление предмета"));
@@ -288,7 +284,12 @@ public class Main extends JFrame {
         addPanel.add(addPanel_1);
         addPanel.add(addPanel_2);
         addPanel.add(exitAddButton);
+
+
+        mainContainer.add(bagPanel);
+        mainContainer.add(itemsPanel);
         mainContainer.add(addPanel);
+        mainContainer.add(costPanel);
 
         JButton next_stepButton = new JButton("Следующий шаг");
 
@@ -437,7 +438,6 @@ public class Main extends JFrame {
                             try {
                                 sleep(100);
                             } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             state_bag++;
