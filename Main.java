@@ -269,7 +269,7 @@ public class Main extends JFrame {
         
 
         JPanel addPanel = new JPanel();
-        addPanel.setBorder(BorderFactory.createTitledBorder("Добавление предмета"));
+        addPanel.setBorder(BorderFactory.createTitledBorder("Ввод"));
         addPanel.setLayout(new GridLayout(3, 0));
         addPanel.setBackground(Color.WHITE);
 
@@ -460,7 +460,7 @@ public class Main extends JFrame {
             while (true) {
                 if (step == l) {
                     if (tec_kol_pred > k) {
-                        if (new_mass[0][i] + sumWeight < M) {
+                        if (new_mass[0][i] + sumWeight <= M) {
                             progressCountCost++;
                             if (progressCountCost != -1) {
                                 for (xProgressCost = 55 * (progressCountCost-1); xProgressCost < 55 * progressCountCost; xProgressCost++) {
@@ -541,7 +541,7 @@ public class Main extends JFrame {
             state_bag_mass_1[state_bag][1] = prev_y1 - y1;
 
             for (int i = 0; i < m-1; i++) {
-                if (y1 != 0 && y2 != 0) {
+                if (y1 != 0) {
                     g2d.setColor(color_bag[i]);
                     g2d.fillRect(0, state_bag_mass_1[i][0], 330, state_bag_mass_1[i][1]);
                     int[] xPointsFill = {330, 330, 400, 400, 330};
