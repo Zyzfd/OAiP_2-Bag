@@ -49,7 +49,6 @@ public class Main extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setState(JFrame.NORMAL);
         Dimension labelSize = new Dimension(50, 20);
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
@@ -365,7 +364,6 @@ public class Main extends JFrame {
         });
 
 
-        frame.pack();
         frame.setVisible(true);
     }
 
@@ -570,7 +568,6 @@ public class Main extends JFrame {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setColor(Color.WHITE);
             g2d.fillRect(0, 0, 600, 40);
