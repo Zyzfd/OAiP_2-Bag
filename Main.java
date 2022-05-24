@@ -49,6 +49,7 @@ public class Main extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setState(JFrame.NORMAL);
         Dimension labelSize = new Dimension(50, 20);
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
@@ -363,7 +364,7 @@ public class Main extends JFrame {
             step++;
         });
 
-
+        frame.pack();
         frame.setVisible(true);
     }
 
@@ -502,7 +503,7 @@ public class Main extends JFrame {
             
             bubble();
     
-            System.out.printf("\nОтвет: %5f\n", put_in_bag());
+            put_in_bag();
 
             progressCountCost = -1;
             progCost.repaint();
