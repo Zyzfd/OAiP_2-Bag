@@ -1,48 +1,53 @@
 import java.awt.*;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class Main extends JFrame {
-    static final int m = 11;
+    final int m = 20;
     Thread thread;
-    static float[][] mass = new float[2][m-1];
-    static float[][] new_mass = new float[2][m-1];
-    static float M;
-    static float[] udel;
-    static float sumCost = 0;
-    static float sumWeight = 0;
-    static int tec_kol_pred = 0;
-    static int step = 0;
-    static JLabel itemWeight_Ud[] = new JLabel[m];
-    static JLabel itemCost_Ud[] = new JLabel[m];
-    static JLabel itemUdCost_Ud[] = new JLabel[m];
-    static JLabel itemProgress = new JLabel();
-    static JLabel itemProgress_Ud = new JLabel();
-    static JFrame frame = new JFrame("Задача о рюкзаке");
-    static JLabel ruc1;
-    static JLabel ruc2;
-    static PrintBag printBag;
-    static ProgressCost progCost;
-    static ProgressItems progItems;
+    float[][] mass = new float[2][m-1];
+    float[][] new_mass = new float[2][m-1];
+    float M;
+    float[] udel;
+    float sumCost = 0;
+    float sumWeight = 0;
+    int tec_kol_pred = 0;
+    int bagCounter = 0;
+    int step = 0;
+    JLabel itemWeight[] = new JLabel[m];
+    JLabel itemCost[] = new JLabel[m];
+    JLabel itemUdCost[] = new JLabel[m];
+    JLabel itemProgress = new JLabel();
+    JFrame frame = new JFrame("Задача о рюкзаке");
+    JLabel ruc1;
+    JLabel ruc2;
+    PrintBag printBag;
+    Progress progress;
     AboutDialog dialog;
-    static int y1;
-    static int y2;
-    static int prev_y1 = 400;
-    static int prev_y2 = 330;
-    static int state_bag = 0;
-    static Color[] color_bag = new Color[m];
-    static int[][] state_bag_mass = new int[m][5];
-    static int[][] state_bag_mass_1 = new int[m][2];
-    static int progressCountItems = -1;
-    static int xProgressItems;
-    static int progressCountCost = -1;
-    static int xProgressCost;
+    int y1;
+    int y2;
+    int prev_y1 = 400;
+    int prev_y2 = 330;
+    int state_bag = 0;
+    Color[] color_bag = new Color[m];
+    int[][] state_bag_mass = new int[m][5];
+    int[][] state_bag_mass_1 = new int[m][2];
+    int progressCountItems = -1;
+    int xProgress;
+    int progressCountCost = -1;
     Font font = new Font("Sans-serif", Font.PLAIN, 20);
     Dimension nameDimension = new Dimension (210, 30);
-    Dimension labelSize = new Dimension(60, 30);
+    Dimension labelSize = new Dimension(70, 30);
     Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+    Timer time;
+    TimerTask timerTask;
+    boolean exit = true;
+    boolean progressOk = false;
+    
     
 
     public static void main(String[] args) {
@@ -61,40 +66,39 @@ public class Main extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
 
         Container mainContainer = new Container();
-        mainContainer.setLayout(new GridLayout(2, 2));
-        mainContainer.setBackground(Color.WHITE);
+        mainContainer.setLayout(new GridBagLayout());
+        mainContainer.setBackground(Color.WHITE);        
 
 
         JPanel itemsPanel = new JPanel();
         itemsPanel.setBorder(BorderFactory.createTitledBorder("Предметы"));
+        itemsPanel.setLayout(new GridLayout(4, 1));
         itemsPanel.setBackground(Color.WHITE);
-        itemsPanel.setLayout(new GridLayout(3, 1));
 
-
-            JLabel itemWeight[] = new JLabel[m];
+            
             itemWeight[0] = new JLabel("Вес предмета");
-            itemWeight[0].setBackground(Color.WHITE);
-            itemWeight[0].setFont(font);
             itemWeight[0].setPreferredSize(nameDimension);
+            itemWeight[0].setBackground(Color.WHITE);
             itemWeight[0].setBorder(solidBorder);
+            itemWeight[0].setFont(font);
             itemWeight[0].setVerticalAlignment(JLabel.CENTER);
             itemWeight[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemWeight[i] = new JLabel();
                 itemWeight[i].setPreferredSize(labelSize);
                 itemWeight[i].setBackground(Color.WHITE);
-                itemWeight[i].setFont(font);
                 itemWeight[i].setBorder(solidBorder);
+                itemWeight[i].setFont(font);
                 itemWeight[i].setVerticalAlignment(JLabel.CENTER);
                 itemWeight[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
-            JLabel itemCost[] = new JLabel[m];
+            
             itemCost[0] = new JLabel("Стоимость предмета");
             itemCost[0].setPreferredSize(nameDimension);
-            itemCost[0].setFont(font);
             itemCost[0].setBackground(Color.WHITE);
             itemCost[0].setBorder(solidBorder);
+            itemCost[0].setFont(font);
             itemCost[0].setVerticalAlignment(JLabel.CENTER);
             itemCost[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
@@ -108,15 +112,33 @@ public class Main extends JFrame {
             }
 
             
+            itemUdCost[0] = new JLabel("Удельная стоимость");
+            itemUdCost[0].setPreferredSize(nameDimension);
+            itemUdCost[0].setBackground(Color.WHITE);
+            itemUdCost[0].setBorder(solidBorder);
+            itemUdCost[0].setFont(font);
+            itemUdCost[0].setVerticalAlignment(JLabel.CENTER);
+            itemUdCost[0].setHorizontalAlignment(JLabel.CENTER);
+            for (int i = 1; i < m; i++) {
+                itemUdCost[i] = new JLabel();
+                itemUdCost[i].setPreferredSize(labelSize);
+                itemUdCost[i].setBackground(Color.WHITE);
+                itemUdCost[i].setBorder(solidBorder);
+                itemUdCost[i].setFont(font);
+                itemUdCost[i].setVerticalAlignment(JLabel.CENTER);
+                itemUdCost[i].setHorizontalAlignment(JLabel.CENTER);
+            }
+
+            
             itemProgress = new JLabel("Прогресс");
             itemProgress.setPreferredSize(nameDimension);
             itemProgress.setBackground(Color.WHITE);
             itemProgress.setFont(font);
             itemProgress.setVerticalAlignment(JLabel.CENTER);
             itemProgress.setHorizontalAlignment(JLabel.CENTER);
-            progItems = new ProgressItems();
-            progItems.setBackground(Color.WHITE);
-            progItems.setPreferredSize(new Dimension(650, 40));
+            progress = new Progress();
+            progress.setBackground(Color.WHITE);
+            progress.setPreferredSize(new Dimension(1420, 40));
 
             JPanel preItemsPanel_1 = new JPanel();
             preItemsPanel_1.setLayout(new FlowLayout());
@@ -135,117 +157,20 @@ public class Main extends JFrame {
             JPanel preItemsPanel_3 = new JPanel();
             preItemsPanel_3.setLayout(new FlowLayout());
             preItemsPanel_3.setBackground(Color.WHITE);
-            preItemsPanel_3.add(itemProgress);
-            preItemsPanel_3.add(progItems);
+            for (int i = 0; i < m; i++) {
+                preItemsPanel_3.add(itemUdCost[i]);
+            }
+
+            JPanel preItemsPanel_4 = new JPanel();
+            preItemsPanel_4.setLayout(new FlowLayout());
+            preItemsPanel_4.setBackground(Color.WHITE);
+            preItemsPanel_4.add(itemProgress);
+            preItemsPanel_4.add(progress);
 
             itemsPanel.add(preItemsPanel_1);
             itemsPanel.add(preItemsPanel_2);
             itemsPanel.add(preItemsPanel_3);
-
-        
-
-
-        JPanel costPanel = new JPanel();
-        costPanel.setBorder(BorderFactory.createTitledBorder("Удельная стоимость"));
-        costPanel.setLayout(new GridLayout(4, 1));
-        costPanel.setBackground(Color.WHITE);
-
-            
-            itemWeight_Ud[0] = new JLabel("Вес предмета");
-            itemWeight_Ud[0].setPreferredSize(nameDimension);
-            itemWeight_Ud[0].setBackground(Color.WHITE);
-            itemWeight_Ud[0].setBorder(solidBorder);
-            itemWeight_Ud[0].setFont(font);
-            itemWeight_Ud[0].setVerticalAlignment(JLabel.CENTER);
-            itemWeight_Ud[0].setHorizontalAlignment(JLabel.CENTER);
-            for (int i = 1; i < m; i++) {
-                itemWeight_Ud[i] = new JLabel();
-                itemWeight_Ud[i].setPreferredSize(labelSize);
-                itemWeight_Ud[i].setBackground(Color.WHITE);
-                itemWeight_Ud[i].setBorder(solidBorder);
-                itemWeight_Ud[i].setFont(font);
-                itemWeight_Ud[i].setVerticalAlignment(JLabel.CENTER);
-                itemWeight_Ud[i].setHorizontalAlignment(JLabel.CENTER);
-            }
-
-            
-            itemCost_Ud[0] = new JLabel("Стоимость предмета");
-            itemCost_Ud[0].setPreferredSize(nameDimension);
-            itemCost_Ud[0].setBackground(Color.WHITE);
-            itemCost_Ud[0].setBorder(solidBorder);
-            itemCost_Ud[0].setFont(font);
-            itemCost_Ud[0].setVerticalAlignment(JLabel.CENTER);
-            itemCost_Ud[0].setHorizontalAlignment(JLabel.CENTER);
-            for (int i = 1; i < m; i++) {
-                itemCost_Ud[i] = new JLabel();
-                itemCost_Ud[i].setPreferredSize(labelSize);
-                itemCost_Ud[i].setBackground(Color.WHITE);
-                itemCost_Ud[i].setBorder(solidBorder);
-                itemCost_Ud[i].setFont(font);
-                itemCost_Ud[i].setVerticalAlignment(JLabel.CENTER);
-                itemCost_Ud[i].setHorizontalAlignment(JLabel.CENTER);
-            }
-
-            
-            itemUdCost_Ud[0] = new JLabel("Удельная стоимость");
-            itemUdCost_Ud[0].setPreferredSize(nameDimension);
-            itemUdCost_Ud[0].setBackground(Color.WHITE);
-            itemUdCost_Ud[0].setBorder(solidBorder);
-            itemUdCost_Ud[0].setFont(font);
-            itemUdCost_Ud[0].setVerticalAlignment(JLabel.CENTER);
-            itemUdCost_Ud[0].setHorizontalAlignment(JLabel.CENTER);
-            for (int i = 1; i < m; i++) {
-                itemUdCost_Ud[i] = new JLabel();
-                itemUdCost_Ud[i].setPreferredSize(labelSize);
-                itemUdCost_Ud[i].setBackground(Color.WHITE);
-                itemUdCost_Ud[i].setBorder(solidBorder);
-                itemUdCost_Ud[i].setFont(font);
-                itemUdCost_Ud[i].setVerticalAlignment(JLabel.CENTER);
-                itemUdCost_Ud[i].setHorizontalAlignment(JLabel.CENTER);
-            }
-
-            
-            itemProgress_Ud = new JLabel("Прогресс");
-            itemProgress_Ud.setPreferredSize(nameDimension);
-            itemProgress_Ud.setBackground(Color.WHITE);
-            itemProgress_Ud.setFont(font);
-            itemProgress_Ud.setVerticalAlignment(JLabel.CENTER);
-            itemProgress_Ud.setHorizontalAlignment(JLabel.CENTER);
-            progCost = new ProgressCost();
-            progCost.setBackground(Color.WHITE);
-            progCost.setPreferredSize(new Dimension(650, 40));
-
-            JPanel preCostPanel_1 = new JPanel();
-            preCostPanel_1.setLayout(new FlowLayout());
-            preCostPanel_1.setBackground(Color.WHITE);
-            for (int i = 0; i < m; i++) {
-                preCostPanel_1.add(itemWeight_Ud[i]);
-            }
-
-            JPanel preCostPanel_2 = new JPanel();
-            preCostPanel_2.setLayout(new FlowLayout());
-            preCostPanel_2.setBackground(Color.WHITE);
-            for (int i = 0; i < m; i++) {
-                preCostPanel_2.add(itemCost_Ud[i]);
-            }
-
-            JPanel preCostPanel_3 = new JPanel();
-            preCostPanel_3.setLayout(new FlowLayout());
-            preCostPanel_3.setBackground(Color.WHITE);
-            for (int i = 0; i < m; i++) {
-                preCostPanel_3.add(itemUdCost_Ud[i]);
-            }
-
-            JPanel preCostPanel_4 = new JPanel();
-            preCostPanel_4.setLayout(new FlowLayout());
-            preCostPanel_4.setBackground(Color.WHITE);
-            preCostPanel_4.add(itemProgress_Ud);
-            preCostPanel_4.add(progCost);
-
-            costPanel.add(preCostPanel_1);
-            costPanel.add(preCostPanel_2);
-            costPanel.add(preCostPanel_3);
-            costPanel.add(preCostPanel_4);
+            itemsPanel.add(preItemsPanel_4);
 
 
 
@@ -253,14 +178,14 @@ public class Main extends JFrame {
         bagPanel.setBorder(BorderFactory.createTitledBorder("Рюкзак"));
         bagPanel.setBackground(Color.WHITE);
         bagPanel.setLayout(new GridLayout(0, 2));
-        bagPanel.setPreferredSize(new Dimension(850, 460));
+        bagPanel.setPreferredSize(new Dimension(920, 460));
             printBag = new PrintBag();
             printBag.setBackground(Color.WHITE);
             printBag.setPreferredSize(new Dimension(410, 410));
             JPanel bagPanel_1 = new JPanel();
             bagPanel_1.setLayout(new FlowLayout());
             bagPanel_1.setBackground(Color.WHITE);
-                Dimension labelSize_bag = new Dimension(350, 30);
+                Dimension labelSize_bag = new Dimension(370, 30);
                 JLabel bagLabel = new JLabel("Грузоподъемность рюкзака:");
                 bagLabel.setFont(font);
                 bagLabel.setPreferredSize(labelSize_bag);
@@ -363,25 +288,50 @@ public class Main extends JFrame {
         addPanel.add(addPanel_2);
         addPanel.add(exitAddButton);
 
+        c.gridwidth = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        mainContainer.add(itemsPanel, c);
 
-        mainContainer.add(bagPanel);
-        mainContainer.add(itemsPanel);
-        mainContainer.add(addPanel);
-        mainContainer.add(costPanel);
+        c.gridwidth = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        mainContainer.add(bagPanel, c);
+
+        c.gridwidth = GridBagConstraints.VERTICAL;
+        c.fill = 1;
+        c.gridx = 1;
+        c.gridy = 1;
+        mainContainer.add(addPanel, c);
+        
 
         JButton next_stepButton = new JButton("Следующий шаг");
         next_stepButton.setFont(font);
+        
+        JButton stop_timerButton = new JButton("Остановить");
+        stop_timerButton.setFont(font);
+        
+        JButton continue_timerButton = new JButton("Продолжить");
+        continue_timerButton.setFont(font);
 
-        c.anchor = GridBagConstraints.PAGE_START;
+
         c.gridx = 0;
         c.gridy = 0;
         allContainer.add(mainContainer, c);
 
-
-        c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 1;
         allContainer.add(next_stepButton, c);
+        
+        c.gridx = 0;
+        c.gridy = 2;
+        allContainer.add(stop_timerButton, c);
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        allContainer.add(continue_timerButton, c);
 
         ok.addActionListener(e -> {
             M = Float.parseFloat(grus.getText());
@@ -393,25 +343,54 @@ public class Main extends JFrame {
             mass[1][tec_kol_pred] = Float.parseFloat(cost.getText());
             itemWeight[tec_kol_pred+1].setText(String.valueOf(mass[0][tec_kol_pred]));
             itemCost[tec_kol_pred+1].setText(String.valueOf(mass[1][tec_kol_pred]));
-            //weight.setText("");
-            //cost.setText("");
+            weight.setText("");
+            cost.setText("");
             tec_kol_pred++;
         });
 
         exitAddButton.addActionListener(e -> {
-            thread = new AlgorithmThread(this);
-            thread.start();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    nextStep();
+                }
+            };
+            time = new Timer();
+            time.scheduleAtFixedRate(timerTask, 0, 1000);
+            dialog = new AboutDialog(sumCost);
+            dialog.setVisible(false);
         });
 
         next_stepButton.addActionListener(e -> {
-            step++;
+            nextStep();
+        });
+
+        stop_timerButton.addActionListener(e -> {
+            time.cancel();
+        });
+        
+        continue_timerButton.addActionListener(e -> {
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    nextStep();
+                }
+            };
+            time = new Timer();
+            time.scheduleAtFixedRate(timerTask, 0, 1000);
         });
 
         frame.pack();
         frame.setVisible(true);
     }
 
-    
+
+    void nextStep() {
+        thread = new AlgorithmThread(this);
+        thread.start();
+    }
+
+
     class AlgorithmThread extends Thread {
         Main main;
 
@@ -419,16 +398,15 @@ public class Main extends JFrame {
             super("AlgorithmThread");
             this.main = main;
         }
-
-        static void swap(float mass[], int ind1, int ind2) {
+        void swap(float mass[], int ind1, int ind2) {
             float temp = mass[ind1];
             mass[ind1] = mass[ind2];
             mass[ind2] = temp;
-    
+
         }
-        
-        static void bubble() {
-            progressCountItems = -1;
+
+        void bubble() {
+            progressOk = false;
             frame.repaint();
 
             for (int i = 0; i < mass.length; i++) {
@@ -442,116 +420,102 @@ public class Main extends JFrame {
                 for (int i = 0; i < udel.length-1; i++) {
                     if (udel[i] < udel[i + 1]) {
                         swap(udel, i, i + 1);
-                        itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
-                        itemUdCost_Ud[i+2].setText(String.valueOf(udel[i+1]));
+                        itemUdCost[i+1].setText(String.valueOf(udel[i]));
+                        itemUdCost[i+2].setText(String.valueOf(udel[i+1]));
 
                         swap(new_mass[0], i, i + 1);
-                        itemWeight_Ud[i+1].setText(String.valueOf(new_mass[0][i]));
-                        itemWeight_Ud[i+2].setText(String.valueOf(new_mass[0][i+1]));
+                        itemWeight[i+1].setText(String.valueOf(new_mass[0][i]));
+                        itemWeight[i+2].setText(String.valueOf(new_mass[0][i+1]));
 
                         swap(new_mass[1], i, i + 1);
-                        itemCost_Ud[i+1].setText(String.valueOf(new_mass[1][i]));
-                        itemCost_Ud[i+2].setText(String.valueOf(new_mass[1][i+1]));
+                        itemCost[i+1].setText(String.valueOf(new_mass[1][i]));
+                        itemCost[i+2].setText(String.valueOf(new_mass[1][i+1]));
                         
                         need = true;
                     }
                 }
-            }            
+            }      
         }
-    
-        static float[] udel() {
-            udel = new float[mass[0].length];
-            int i = 0;
-            while (true) {
-                if (step == i) {
-                    if (tec_kol_pred > i) {
-                        progressCountItems++;
-                            if (progressCountItems != -1) {
-                                for (xProgressItems = 65 * (progressCountItems-1); xProgressItems < 65 * progressCountItems; xProgressItems++) {
-                                    progItems.repaint();
-                                    try {
-                                        Thread.sleep(5);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        if (mass[0][i] != 0) {
-                            udel[i] = mass[1][i] / mass[0][i];         
-                        } else {
-                            udel[i] = 0;
-                        }
-                        itemUdCost_Ud[i+1].setText(String.valueOf(udel[i]));
-                        itemCost_Ud[i+1].setText(String.valueOf(mass[1][i]));
-                        itemWeight_Ud[i+1].setText(String.valueOf(mass[0][i]));
-                    } else {
-                        break;
-                    }
-                    i++;
-                } else {
-                    continue;
-                }
-            }
-            return udel;
-        }
-    
-        static float put_in_bag() {
-            int i = 0;
-            int l = step+1;
-            int k = 0;
-            while (true) {
-                if (step == l) {
-                    if (tec_kol_pred > k) {
-                        if (new_mass[0][i] + sumWeight <= M) {
-                            progressCountCost++;
-                            if (progressCountCost != -1) {
-                                for (xProgressCost = 65 * (progressCountCost-1); xProgressCost < 65 * progressCountCost; xProgressCost++) {
-                                    progCost.repaint();
-                                    try {
-                                        Thread.sleep(4);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
 
-                            sumWeight += new_mass[0][i];
-                            sumCost += new_mass[1][i];
-                            printBag.repaint();            
-                            k++;
-                            i++;
-                            try {
-                                sleep(150);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            state_bag++;
-                        } else {
-                            break;
-                        }
-                    } else { 
-                        break;
-                    }
-                    l++;
-                } else {
-                    continue;
-                }
+        void udel() {
+            if (step == 0) {
+                udel = new float[mass[0].length];
             }
-            return sumCost;
-        } 
-    
+            progressOk = true;
+            progressCountItems++;
+                if (progressCountItems != -1) {
+                    for (xProgress = 75 * (progressCountItems-1); xProgress < 75 * progressCountItems; xProgress++) {
+                        frame.repaint();
+                        try {
+                            Thread.sleep(5);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            if (mass[0][step] != 0) {
+                udel[step] = mass[1][step] / mass[0][step];         
+            } else {
+                udel[step] = 0;
+            }
+            itemUdCost[step+1].setText(String.valueOf(udel[step]));
+        }
+
+        int put_in_bag() {
+            if (new_mass[0][bagCounter] + sumWeight <= M) {
+                progressOk = true;
+                progressCountCost++;
+                if (progressCountCost != -1) {
+                    for (xProgress = 75 * (progressCountCost-1); xProgress < 75 * progressCountCost; xProgress++) {
+                        progress.repaint();
+                        try {
+                            Thread.sleep(5);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                sumWeight += new_mass[0][bagCounter];
+                sumCost += new_mass[1][bagCounter];
+                printBag.repaint();
+                bagCounter++;
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                state_bag++;
+            } else {
+                return 0;
+            }
+
+            return 1;
+        }
+
+        void exit() {
+            if (exit) {
+                progressOk = false;
+                progress.repaint();
+                dialog = new AboutDialog(sumCost);
+                dialog.setVisible(true);
+                exit = false;
+            }
+        }
+
         public void run() {
-            
-            udel();
-            
-            bubble();
-    
-            put_in_bag();
-
-            progressCountCost = -1;
-            progCost.repaint();
-            dialog = new AboutDialog(sumCost);
-            dialog.setVisible(true);
+            if (step < tec_kol_pred) {
+                udel();
+            } else if (step == tec_kol_pred){
+                bubble();
+            } else if (step <= tec_kol_pred * 2) {
+                if (put_in_bag() == 0) {
+                    exit();
+                }
+            } else if (step > tec_kol_pred * 2) {
+                exit();
+            }
+            step++;
         }
     }
 
@@ -608,31 +572,16 @@ public class Main extends JFrame {
         }
     }
 
-    class ProgressItems extends JPanel {
+    class Progress extends JPanel {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setColor(Color.WHITE);
             g2d.fillRect(0, 0, 600, 40);
-            if (progressCountItems != -1) {                    
+            if (progressOk) {                    
                 g2d.setColor(Color.GREEN);
-                g2d.fillOval(25 + xProgressItems, 10, 20, 20);
-            }
-            Toolkit.getDefaultToolkit().sync();
-        }
-    }
-    
-    class ProgressCost extends JPanel {
-        @Override
-        public void paint(Graphics g) {
-            super.paint(g);
-            Graphics2D g2d = (Graphics2D)g;
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(0, 0, 600, 40);
-            if (progressCountCost != -1) {                    
-                g2d.setColor(Color.GREEN);
-                g2d.fillOval(25 + xProgressCost, 10, 20, 20);
+                g2d.fillOval(25 + xProgress, 10, 20, 20);
             }
             Toolkit.getDefaultToolkit().sync();
         }
@@ -640,7 +589,6 @@ public class Main extends JFrame {
 
     class AboutDialog extends JDialog {
         public AboutDialog (float sumCost) {
-
             JLabel finalText = new JLabel("Итоговая стоимость вещей в рюкзаке: " + String.valueOf(sumCost));
             finalText.setFont(font);
             finalText.setVerticalAlignment(JLabel.CENTER);
