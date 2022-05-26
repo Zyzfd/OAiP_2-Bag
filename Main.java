@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class Main extends JFrame {
-    static final int m = 12;
+    static final int m = 11;
     Thread thread;
     static float[][] mass = new float[2][m-1];
     static float[][] new_mass = new float[2][m-1];
@@ -39,6 +39,10 @@ public class Main extends JFrame {
     static int xProgressItems;
     static int progressCountCost = -1;
     static int xProgressCost;
+    Font font = new Font("Sans-serif", Font.PLAIN, 20);
+    Dimension nameDimension = new Dimension (210, 30);
+    Dimension labelSize = new Dimension(60, 30);
+    Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
     
 
     public static void main(String[] args) {
@@ -50,8 +54,6 @@ public class Main extends JFrame {
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setState(JFrame.NORMAL);
-        Dimension labelSize = new Dimension(50, 20);
-        Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
         Container allContainer = frame.getContentPane();
         allContainer.setLayout(new GridBagLayout());
@@ -72,12 +74,16 @@ public class Main extends JFrame {
             JLabel itemWeight[] = new JLabel[m];
             itemWeight[0] = new JLabel("Вес предмета");
             itemWeight[0].setBackground(Color.WHITE);
-            itemWeight[0].setPreferredSize(new Dimension(150, 20));
+            itemWeight[0].setFont(font);
+            itemWeight[0].setPreferredSize(nameDimension);
             itemWeight[0].setBorder(solidBorder);
+            itemWeight[0].setVerticalAlignment(JLabel.CENTER);
+            itemWeight[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemWeight[i] = new JLabel();
                 itemWeight[i].setPreferredSize(labelSize);
                 itemWeight[i].setBackground(Color.WHITE);
+                itemWeight[i].setFont(font);
                 itemWeight[i].setBorder(solidBorder);
                 itemWeight[i].setVerticalAlignment(JLabel.CENTER);
                 itemWeight[i].setHorizontalAlignment(JLabel.CENTER);
@@ -85,25 +91,32 @@ public class Main extends JFrame {
 
             JLabel itemCost[] = new JLabel[m];
             itemCost[0] = new JLabel("Стоимость предмета");
-            itemCost[0].setPreferredSize(new Dimension(150, 20));
+            itemCost[0].setPreferredSize(nameDimension);
+            itemCost[0].setFont(font);
             itemCost[0].setBackground(Color.WHITE);
             itemCost[0].setBorder(solidBorder);
+            itemCost[0].setVerticalAlignment(JLabel.CENTER);
+            itemCost[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemCost[i] = new JLabel();
                 itemCost[i].setPreferredSize(labelSize);
                 itemCost[i].setBackground(Color.WHITE);
                 itemCost[i].setBorder(solidBorder);
+                itemCost[i].setFont(font);
                 itemCost[i].setVerticalAlignment(JLabel.CENTER);
                 itemCost[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
             
             itemProgress = new JLabel("Прогресс");
-            itemProgress.setPreferredSize(new Dimension(150, 20));
+            itemProgress.setPreferredSize(nameDimension);
             itemProgress.setBackground(Color.WHITE);
+            itemProgress.setFont(font);
+            itemProgress.setVerticalAlignment(JLabel.CENTER);
+            itemProgress.setHorizontalAlignment(JLabel.CENTER);
             progItems = new ProgressItems();
             progItems.setBackground(Color.WHITE);
-            progItems.setPreferredSize(new Dimension(600, 40));
+            progItems.setPreferredSize(new Dimension(650, 40));
 
             JPanel preItemsPanel_1 = new JPanel();
             preItemsPanel_1.setLayout(new FlowLayout());
@@ -139,54 +152,68 @@ public class Main extends JFrame {
 
             
             itemWeight_Ud[0] = new JLabel("Вес предмета");
-            itemWeight_Ud[0].setPreferredSize(new Dimension(150, 20));
+            itemWeight_Ud[0].setPreferredSize(nameDimension);
             itemWeight_Ud[0].setBackground(Color.WHITE);
             itemWeight_Ud[0].setBorder(solidBorder);
+            itemWeight_Ud[0].setFont(font);
+            itemWeight_Ud[0].setVerticalAlignment(JLabel.CENTER);
+            itemWeight_Ud[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemWeight_Ud[i] = new JLabel();
                 itemWeight_Ud[i].setPreferredSize(labelSize);
                 itemWeight_Ud[i].setBackground(Color.WHITE);
                 itemWeight_Ud[i].setBorder(solidBorder);
+                itemWeight_Ud[i].setFont(font);
                 itemWeight_Ud[i].setVerticalAlignment(JLabel.CENTER);
                 itemWeight_Ud[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
             
             itemCost_Ud[0] = new JLabel("Стоимость предмета");
-            itemCost_Ud[0].setPreferredSize(new Dimension(150, 20));
+            itemCost_Ud[0].setPreferredSize(nameDimension);
             itemCost_Ud[0].setBackground(Color.WHITE);
             itemCost_Ud[0].setBorder(solidBorder);
+            itemCost_Ud[0].setFont(font);
+            itemCost_Ud[0].setVerticalAlignment(JLabel.CENTER);
+            itemCost_Ud[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemCost_Ud[i] = new JLabel();
                 itemCost_Ud[i].setPreferredSize(labelSize);
                 itemCost_Ud[i].setBackground(Color.WHITE);
                 itemCost_Ud[i].setBorder(solidBorder);
+                itemCost_Ud[i].setFont(font);
                 itemCost_Ud[i].setVerticalAlignment(JLabel.CENTER);
                 itemCost_Ud[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
             
             itemUdCost_Ud[0] = new JLabel("Удельная стоимость");
-            itemUdCost_Ud[0].setPreferredSize(new Dimension(150, 20));
+            itemUdCost_Ud[0].setPreferredSize(nameDimension);
             itemUdCost_Ud[0].setBackground(Color.WHITE);
             itemUdCost_Ud[0].setBorder(solidBorder);
+            itemUdCost_Ud[0].setFont(font);
+            itemUdCost_Ud[0].setVerticalAlignment(JLabel.CENTER);
+            itemUdCost_Ud[0].setHorizontalAlignment(JLabel.CENTER);
             for (int i = 1; i < m; i++) {
                 itemUdCost_Ud[i] = new JLabel();
                 itemUdCost_Ud[i].setPreferredSize(labelSize);
                 itemUdCost_Ud[i].setBackground(Color.WHITE);
                 itemUdCost_Ud[i].setBorder(solidBorder);
+                itemUdCost_Ud[i].setFont(font);
                 itemUdCost_Ud[i].setVerticalAlignment(JLabel.CENTER);
                 itemUdCost_Ud[i].setHorizontalAlignment(JLabel.CENTER);
             }
 
             
             itemProgress_Ud = new JLabel("Прогресс");
-            itemProgress_Ud.setPreferredSize(new Dimension(150, 20));
+            itemProgress_Ud.setPreferredSize(nameDimension);
             itemProgress_Ud.setBackground(Color.WHITE);
+            itemProgress_Ud.setFont(font);
+            itemProgress_Ud.setVerticalAlignment(JLabel.CENTER);
+            itemProgress_Ud.setHorizontalAlignment(JLabel.CENTER);
             progCost = new ProgressCost();
             progCost.setBackground(Color.WHITE);
-            progCost.setBorder(solidBorder);
-            progCost.setPreferredSize(new Dimension(600, 40));
+            progCost.setPreferredSize(new Dimension(650, 40));
 
             JPanel preCostPanel_1 = new JPanel();
             preCostPanel_1.setLayout(new FlowLayout());
@@ -233,28 +260,34 @@ public class Main extends JFrame {
             JPanel bagPanel_1 = new JPanel();
             bagPanel_1.setLayout(new FlowLayout());
             bagPanel_1.setBackground(Color.WHITE);
-                Dimension labelSize_bag = new Dimension(260, 20);
+                Dimension labelSize_bag = new Dimension(350, 30);
                 JLabel bagLabel = new JLabel("Грузоподъемность рюкзака:");
+                bagLabel.setFont(font);
                 bagLabel.setPreferredSize(labelSize_bag);
                 bagLabel.setBackground(Color.WHITE);
 
                 JLabel ruc = new JLabel();
+                ruc.setFont(font);
                 ruc.setPreferredSize(labelSize);
                 ruc.setBackground(Color.WHITE);
 
                 JLabel tec_weight_bag = new JLabel("Текущая заполненность рюкзака: ");
+                tec_weight_bag.setFont(font);
                 tec_weight_bag.setPreferredSize(labelSize_bag);
                 tec_weight_bag.setBackground(Color.WHITE);
 
                 ruc1 = new JLabel("0");
+                ruc1.setFont(font);
                 ruc1.setPreferredSize(labelSize);
                 ruc1.setBackground(Color.WHITE);
 
-                JLabel tec_weight_bag_perc = new JLabel("Текущая заполненность рюкзака (в %): ");
+                JLabel tec_weight_bag_perc = new JLabel("Текущая заполненность рюкзака %:");
+                tec_weight_bag_perc.setFont(font);
                 tec_weight_bag_perc.setPreferredSize(labelSize_bag);
                 tec_weight_bag_perc.setBackground(Color.WHITE);
 
                 ruc2 = new JLabel("0%");
+                ruc2.setFont(font);
                 ruc2.setPreferredSize(labelSize);
                 ruc2.setBackground(Color.WHITE);
 
@@ -277,12 +310,15 @@ public class Main extends JFrame {
             addPanel_1.setLayout(new FlowLayout());
             addPanel_1.setBackground(Color.WHITE);
                 JLabel addLabel_1 = new JLabel("Грузоподъемность");
-                addLabel_1.setPreferredSize(new Dimension(150, 20));
+                addLabel_1.setFont(font);
+                addLabel_1.setPreferredSize(nameDimension);
                 addLabel_1.setBackground(Color.WHITE);
                 JTextField grus = new JTextField();
-                grus.setPreferredSize(new Dimension(150, 20));
+                grus.setFont(font);
+                grus.setPreferredSize(nameDimension);
                 grus.setBackground(Color.WHITE);
                 JButton ok = new JButton("OK");
+                ok.setFont(font);
             addPanel_1.add(addLabel_1);
             addPanel_1.add(grus);
             addPanel_1.add(ok);
@@ -294,15 +330,19 @@ public class Main extends JFrame {
                 addPanel_2_1.setLayout(new GridLayout(2, 2));
                 addPanel_2_1.setBackground(Color.WHITE);
                     JLabel addLabel_2_1 = new JLabel("Вес");
-                    addLabel_2_1.setPreferredSize(new Dimension(150, 20));
+                    addLabel_2_1.setFont(font);
+                    addLabel_2_1.setPreferredSize(nameDimension);
                     addLabel_2_1.setBackground(Color.WHITE);
                     JLabel addLabel_2_2 = new JLabel("Стоимость");
-                    addLabel_2_2.setPreferredSize(new Dimension(150, 20));
+                    addLabel_2_2.setFont(font);
+                    addLabel_2_2.setPreferredSize(nameDimension);
                     addLabel_2_2.setBackground(Color.WHITE);
                     JTextField weight = new JTextField();
+                    weight.setFont(font);
                     weight.setPreferredSize(new Dimension(20, 20));
                     weight.setBackground(Color.WHITE);
                     JTextField cost = new JTextField();
+                    cost.setFont(font);
                     cost.setPreferredSize(new Dimension(20, 20));
                     cost.setBackground(Color.WHITE);
                 addPanel_2_1.add(addLabel_2_1);
@@ -311,12 +351,14 @@ public class Main extends JFrame {
                 addPanel_2_1.add(cost);
 
                 JButton addButton = new JButton("Добавить");
+                addButton.setFont(font);
                 
             addPanel_2.add(addPanel_2_1);
             addPanel_2.add(addButton);
 
             JButton exitAddButton = new JButton("Завершить добавление");
-            exitAddButton.setSize(new Dimension(150, 20));
+            exitAddButton.setFont(font);
+            exitAddButton.setSize(nameDimension);
         addPanel.add(addPanel_1);
         addPanel.add(addPanel_2);
         addPanel.add(exitAddButton);
@@ -328,6 +370,7 @@ public class Main extends JFrame {
         mainContainer.add(costPanel);
 
         JButton next_stepButton = new JButton("Следующий шаг");
+        next_stepButton.setFont(font);
 
         c.anchor = GridBagConstraints.PAGE_START;
         c.gridx = 0;
@@ -350,8 +393,8 @@ public class Main extends JFrame {
             mass[1][tec_kol_pred] = Float.parseFloat(cost.getText());
             itemWeight[tec_kol_pred+1].setText(String.valueOf(mass[0][tec_kol_pred]));
             itemCost[tec_kol_pred+1].setText(String.valueOf(mass[1][tec_kol_pred]));
-            weight.setText("");
-            cost.setText("");
+            //weight.setText("");
+            //cost.setText("");
             tec_kol_pred++;
         });
 
@@ -424,7 +467,7 @@ public class Main extends JFrame {
                     if (tec_kol_pred > i) {
                         progressCountItems++;
                             if (progressCountItems != -1) {
-                                for (xProgressItems = 55 * (progressCountItems-1); xProgressItems < 55 * progressCountItems; xProgressItems++) {
+                                for (xProgressItems = 65 * (progressCountItems-1); xProgressItems < 65 * progressCountItems; xProgressItems++) {
                                     progItems.repaint();
                                     try {
                                         Thread.sleep(5);
@@ -462,7 +505,7 @@ public class Main extends JFrame {
                         if (new_mass[0][i] + sumWeight <= M) {
                             progressCountCost++;
                             if (progressCountCost != -1) {
-                                for (xProgressCost = 55 * (progressCountCost-1); xProgressCost < 55 * progressCountCost; xProgressCost++) {
+                                for (xProgressCost = 65 * (progressCountCost-1); xProgressCost < 65 * progressCountCost; xProgressCost++) {
                                     progCost.repaint();
                                     try {
                                         Thread.sleep(4);
@@ -574,7 +617,7 @@ public class Main extends JFrame {
             g2d.fillRect(0, 0, 600, 40);
             if (progressCountItems != -1) {                    
                 g2d.setColor(Color.GREEN);
-                g2d.fillOval(15 + xProgressItems, 10, 20, 20);
+                g2d.fillOval(25 + xProgressItems, 10, 20, 20);
             }
             Toolkit.getDefaultToolkit().sync();
         }
@@ -589,7 +632,7 @@ public class Main extends JFrame {
             g2d.fillRect(0, 0, 600, 40);
             if (progressCountCost != -1) {                    
                 g2d.setColor(Color.GREEN);
-                g2d.fillOval(15 + xProgressCost, 10, 20, 20);
+                g2d.fillOval(25 + xProgressCost, 10, 20, 20);
             }
             Toolkit.getDefaultToolkit().sync();
         }
@@ -599,12 +642,14 @@ public class Main extends JFrame {
         public AboutDialog (float sumCost) {
 
             JLabel finalText = new JLabel("Итоговая стоимость вещей в рюкзаке: " + String.valueOf(sumCost));
+            finalText.setFont(font);
             finalText.setVerticalAlignment(JLabel.CENTER);
             finalText.setHorizontalAlignment(JLabel.CENTER);
 
             add(finalText);
     
             JButton okButton = new JButton("ok");
+            okButton.setFont(font);
             okButton.addActionListener(e -> {
                 setVisible(false);
                 System.exit(0);
@@ -613,7 +658,7 @@ public class Main extends JFrame {
             JPanel panel = new JPanel();
             panel.add(okButton);
             add(panel, BorderLayout.SOUTH);
-            setSize(350, 160);
+            pack();
         }
     }
 }
