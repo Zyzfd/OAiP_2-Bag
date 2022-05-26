@@ -515,6 +515,7 @@ public class Main extends JFrame {
             } else if (step > tec_kol_pred * 2) {
                 exit();
             }
+            Thread.currentThread().interrupt();
             step++;
         }
     }
