@@ -8,6 +8,7 @@ import javax.swing.border.*;
 
 public class Main extends JFrame {
     final int m = 20;
+    final int timertime = 1500;
     Thread thread;
     float[][] mass = new float[2][m-1];
     float[][] new_mass = new float[2][m-1];
@@ -356,7 +357,7 @@ public class Main extends JFrame {
                 }
             };
             time = new Timer();
-            time.scheduleAtFixedRate(timerTask, 0, 1000);
+            time.scheduleAtFixedRate(timerTask, 0, timertime);
             dialog = new AboutDialog(sumCost);
             dialog.setVisible(false);
         });
@@ -377,7 +378,7 @@ public class Main extends JFrame {
                 }
             };
             time = new Timer();
-            time.scheduleAtFixedRate(timerTask, 0, 1000);
+            time.scheduleAtFixedRate(timerTask, 0, timertime);
         });
 
         frame.pack();
