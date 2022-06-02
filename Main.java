@@ -76,7 +76,6 @@ public class Main extends JFrame {
         itemsPanel.setLayout(new GridLayout(4, 1));
         itemsPanel.setBackground(Color.WHITE);
 
-            
             itemWeight[0] = new JLabel("Вес предмета");
             itemWeight[0].setPreferredSize(nameDimension);
             itemWeight[0].setBackground(Color.WHITE);
@@ -172,8 +171,7 @@ public class Main extends JFrame {
             itemsPanel.add(preItemsPanel_2);
             itemsPanel.add(preItemsPanel_3);
             itemsPanel.add(preItemsPanel_4);
-
-
+            
 
         JPanel bagPanel = new JPanel();
         bagPanel.setBorder(BorderFactory.createTitledBorder("Рюкзак"));
